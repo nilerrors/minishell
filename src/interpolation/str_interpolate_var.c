@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   str_interpolate_var.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: senayat <senayat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 12:02:13 by senayat           #+#    #+#             */
-/*   Updated: 2024/10/28 10:43:49 by senayat          ###   ########.fr       */
+/*   Created: 2024/11/02 17:45:13 by senayat           #+#    #+#             */
+/*   Updated: 2024/11/02 17:45:22 by senayat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../../include/minishell.h"
 
-int	ft_strncmp(const t_str s1, const t_str s2, size_t n)
+int	str_interpolate_var(t_msh *sh, char **s, char *str)
 {
-	t_str	f;
-	t_str	s;
+	char	*var;
+	char	*tmp;
 
-	f = s1;
-	s = s2;
-	while (*f && *f == *s && n > 0)
-	{
-		f++;
-		s++;
-		n--;
-	}
-	if (n == 0)
+	var = take_variablename(str);
+	if (!var)
+		return (-1);
+	str += ft_strlen(var);
+	tmp = get_env_var(sh, var);
+	free(var);
+	if (!tmp)
 		return (0);
-	return (*(t_bytes)f - *(t_bytes)s);
+	*s = ft_strjoin_free(*s, tmp);
+	tmp = *s;
+	*s = ft_strjoin(tmp, str);
+	free(tmp);
+	return (1);
 }

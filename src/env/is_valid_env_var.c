@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   is_valid_env_var.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: senayat <senayat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 12:02:13 by senayat           #+#    #+#             */
-/*   Updated: 2024/10/28 10:43:49 by senayat          ###   ########.fr       */
+/*   Created: 2024/11/02 20:39:25 by senayat           #+#    #+#             */
+/*   Updated: 2024/11/02 20:39:38 by senayat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../../include/minishell.h"
 
-int	ft_strncmp(const t_str s1, const t_str s2, size_t n)
+bool	is_valid_env_var(char *var)
 {
-	t_str	f;
-	t_str	s;
+	int	i;
 
-	f = s1;
-	s = s2;
-	while (*f && *f == *s && n > 0)
+	if (!var)
+		return (false);
+	i = 0;
+	if (!ft_isalpha(var[i]) && var[i] != '_')
+		return (false);
+	i++;
+	while (var[i] && var[i] != '=')
 	{
-		f++;
-		s++;
-		n--;
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (false);
+		i++;
 	}
-	if (n == 0)
-		return (0);
-	return (*(t_bytes)f - *(t_bytes)s);
+	return (true);
 }

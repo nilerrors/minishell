@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   remove_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: senayat <senayat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 12:02:13 by senayat           #+#    #+#             */
-/*   Updated: 2024/10/28 10:43:49 by senayat          ###   ########.fr       */
+/*   Created: 2024/11/02 20:41:09 by senayat           #+#    #+#             */
+/*   Updated: 2024/11/02 20:41:19 by senayat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../../include/minishell.h"
 
-int	ft_strncmp(const t_str s1, const t_str s2, size_t n)
+bool	remove_env_var(t_msh *sh, char *var)
 {
-	t_str	f;
-	t_str	s;
+	t_env	**current;
+	t_env	*to_delete;
 
-	f = s1;
-	s = s2;
-	while (*f && *f == *s && n > 0)
+	if (!sh)
+		return (false);
+	current = &(sh->env);
+	while (*current && strcmp((*current)->var, var) != 0)
+		current = &((*current)->next);
+	if (*current)
 	{
-		f++;
-		s++;
-		n--;
+		to_delete = *current;
+		*current = (*current)->next;
+		free(to_delete);
 	}
-	if (n == 0)
-		return (0);
-	return (*(t_bytes)f - *(t_bytes)s);
+	return (true);
 }

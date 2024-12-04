@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   execute_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: senayat <senayat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 12:02:13 by senayat           #+#    #+#             */
-/*   Updated: 2024/10/28 10:43:49 by senayat          ###   ########.fr       */
+/*   Created: 2024/11/02 18:16:24 by senayat           #+#    #+#             */
+/*   Updated: 2024/11/02 18:16:33 by senayat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../../include/minishell.h"
 
-int	ft_strncmp(const t_str s1, const t_str s2, size_t n)
+bool	execute_env(t_msh *sh, char **args)
 {
-	t_str	f;
-	t_str	s;
+	t_env	*current;
 
-	f = s1;
-	s = s2;
-	while (*f && *f == *s && n > 0)
+	if (!sh || !args)
+		return (false);
+	if (args[1])
 	{
-		f++;
-		s++;
-		n--;
+		ft_printf("env: too many arguments\n");
+		sh->exit_code = 1;
+		return (false);
 	}
-	if (n == 0)
-		return (0);
-	return (*(t_bytes)f - *(t_bytes)s);
+	sh->exit_code = 0;
+	current = sh->env;
+	while (current)
+	{
+		ft_printf("%s=%s\n", current->var, current->val);
+		current = current->next;
+	}
+	return (true);
 }

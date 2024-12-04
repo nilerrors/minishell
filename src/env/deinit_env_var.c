@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   deinit_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: senayat <senayat@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 12:02:13 by senayat           #+#    #+#             */
-/*   Updated: 2024/10/28 10:43:49 by senayat          ###   ########.fr       */
+/*   Created: 2024/11/02 21:11:29 by senayat           #+#    #+#             */
+/*   Updated: 2024/11/02 21:15:22 by senayat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../../include/minishell.h"
 
-int	ft_strncmp(const t_str s1, const t_str s2, size_t n)
+bool	deinit_env_var(t_env **env)
 {
-	t_str	f;
-	t_str	s;
-
-	f = s1;
-	s = s2;
-	while (*f && *f == *s && n > 0)
-	{
-		f++;
-		s++;
-		n--;
-	}
-	if (n == 0)
-		return (0);
-	return (*(t_bytes)f - *(t_bytes)s);
+	if (!env)
+		return (false);
+	if (!*env)
+		return (true);
+	deinit_env_var(&((*env)->next));
+	ft_set_free((void **)&((*env)->var));
+	ft_set_free((void **)&((*env)->val));
+	ft_set_free((void **)env);
+	return (true);
 }
